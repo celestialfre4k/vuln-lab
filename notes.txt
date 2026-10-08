@@ -1,0 +1,5 @@
+Internal Notes
+
+This file is outside the vulnerable_files directory.
+
+FLAG{PATH_TRAVERSAL_SUCCESS}

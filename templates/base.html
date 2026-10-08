@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>VulnLab</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static',filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="container">
+
+<div style="display:flex;
+justify-content:space-between;
+align-items:center;">
+
+<h2>VulnLab</h2>
+
+<div>
+
+<a href="/" style="color:white;text-decoration:none;margin-right:20px;">Home</a>
+
+<a href="/dashboard" style="color:white;text-decoration:none;margin-right:20px;">Dashboard</a>
+
+<a href="#about" style="color:white;text-decoration:none;margin-right:20px;">About</a>
+
+<a href="/login" style="color:white;text-decoration:none;">Login</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+<div class="footer">
+
+VulnLab | Educational Purpose Only
+
+</div>
+
+</body>
+
+</html>

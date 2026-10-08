@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>💉 SQL Injection Lab</h1>
+
+<p>
+    <span class="medium">🟡 Difficulty : Medium</span>
+</p>
+
+<p>
+    <strong>Category :</strong> Server-Side Injection
+</p>
+
+<p>
+    <strong>OWASP :</strong>
+    A03:2021 Injection
+</p>
+
+<hr>
+
+<h2>Description</h2>
+
+<p>
+    SQL Injection occurs when untrusted user input is incorporated
+    directly into an SQL query.
+</p>
+
+<p>
+    In this lab, the application constructs an SQL query using the
+    supplied username without using parameterized queries.
+</p>
+
+<h2>Objective</h2>
+
+<p>
+    Identify the vulnerable database query and determine how user
+    input changes the SQL statement executed by the application.
+</p>
+
+<hr>
+
+<h2>Search User</h2>
+
+<form method="GET" action="/sqli">
+
+    <label for="username">
+        Username:
+    </label>
+
+    <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter username..."
+    >
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+<hr>
+
+<h2>Query Output</h2>
+
+<pre>{{ output }}</pre>
+
+<hr>
+
+<h2>Example Inputs</h2>
+
+<pre>admin
+
+test
+
+' OR '1'='1
+
+' OR 1=1--</pre>
+
+<p>
+    These inputs are provided for use against this local training
+    application only.
+</p>
+
+<hr>
+
+<h2>How It Works</h2>
+
+<p>
+    The vulnerable backend constructs an SQL statement using string
+    interpolation.
+</p>
+
+<pre>query = f"""
+SELECT * FROM users
+WHERE username = '{username}'
+"""</pre>
+
+<p>
+    Because the input becomes part of the SQL statement itself,
+    specially crafted input can change the structure or logic of
+    the query.
+</p>
+
+<hr>
+
+<h2>Secure Version</h2>
+
+<pre>query = """
+SELECT * FROM users
+WHERE username = ?
+"""
+
+result = cursor.execute(
+    query,
+    (username,)
+).fetchall()</pre>
+
+<p>
+    Parameterized queries keep user-controlled data separate from
+    the SQL statement.
+</p>
+
+<hr>
+
+<h2>Remediation</h2>
+
+<ul>
+
+    <li>
+        Use parameterized queries or prepared statements.
+    </li>
+
+    <li>
+        Never construct SQL queries by concatenating user input.
+    </li>
+
+    <li>
+        Apply appropriate database permissions.
+    </li>
+
+    <li>
+        Validate input where appropriate.
+    </li>
+
+    <li>
+        Avoid exposing detailed database errors to users.
+    </li>
+
+</ul>
+
+{% endblock %}

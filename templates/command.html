@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Command Injection</h1>
+
+<p class="hard">🔴 Difficulty : Hard</p>
+
+<p><strong>OWASP :</strong> A03:2021 Injection</p>
+
+<hr>
+
+<h2>Description</h2>
+
+<p>
+
+Command Injection occurs when user input is executed as part of an operating system command.
+
+</p>
+
+<hr>
+
+<h2>Objective</h2>
+
+<p>
+
+Try injecting additional commands into the IP address field.
+
+</p>
+
+<hr>
+
+<h2>Unsafe Code</h2>
+
+<pre>
+
+command = f"ping {ip}"
+
+os.popen(command)
+
+</pre>
+
+<hr>
+
+<h2>Target IP</h2>
+
+<form method="GET">
+
+<input
+type="text"
+name="ip"
+placeholder="127.0.0.1">
+
+<br><br>
+
+<button>
+
+Execute
+
+</button>
+
+</form>
+
+<hr>
+
+<h2>Output</h2>
+
+<pre>
+
+{{ output }}
+
+</pre>
+
+<hr>
+
+<h2>Example Payloads</h2>
+
+<h3>Windows</h3>
+
+<pre>
+
+127.0.0.1
+
+127.0.0.1 & whoami
+
+127.0.0.1 & dir
+
+127.0.0.1 & hostname
+
+</pre>
+
+<h3>Linux</h3>
+
+<pre>
+
+127.0.0.1
+
+127.0.0.1 ; whoami
+
+127.0.0.1 && ls
+
+127.0.0.1 && id
+
+</pre>
+
+<hr>
+
+<h2>Secure Code</h2>
+
+<pre>
+
+subprocess.run(["ping", ip])
+
+</pre>
+
+<hr>
+
+<h2>Explanation</h2>
+
+<p>
+
+Never concatenate user input into operating system commands.
+
+Always use parameterized command execution such as subprocess.run() with a list of arguments.
+
+</p>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>VulnLab</h1>
+
+<p>
+A vulnerable cybersecurity training platform for learning web application
+security concepts in a safe environment.
+</p>
+
+<hr>
+
+<h2>Available Labs</h2>
+
+<div class="lab-grid">
+
+    <!-- XSS -->
+
+    <div class="card">
+
+        <h2>Cross Site Scripting (XSS)</h2>
+
+        <p><span class="easy">🟢 Difficulty : Easy</span></p>
+
+        <p><strong>Category :</strong> Client Side</p>
+
+        <p><strong>OWASP :</strong> A03:2021 Injection</p>
+
+        <p>
+            Practice reflected Cross-Site Scripting attacks.
+        </p>
+
+        <a href="/xss">
+            <button>Start Lab</button>
+        </a>
+
+    </div>
+
+    <!-- SQL Injection -->
+
+    <div class="card">
+
+        <h2>SQL Injection</h2>
+
+        <p><span class="medium">🟡 Difficulty : Medium</span></p>
+
+        <p><strong>Category :</strong> Server Side</p>
+
+        <p><strong>OWASP :</strong> A03:2021 Injection</p>
+
+        <p>
+            Practice SQL Injection attacks against vulnerable database queries.
+        </p>
+
+        <a href="/sqli">
+            <button>Start Lab</button>
+        </a>
+
+    </div>
+
+    <!-- Authentication -->
+
+    <div class="card">
+
+        <h2>Authentication Bypass</h2>
+
+        <p><span class="medium">🟡 Difficulty : Medium</span></p>
+
+        <p><strong>Category :</strong> Authentication</p>
+
+        <p><strong>OWASP :</strong> A07:2021 Identification and Authentication Failures</p>
+
+        <p>
+            Test SQL Injection authentication bypass vulnerabilities.
+        </p>
+
+        <a href="/login">
+            <button>Start Lab</button>
+        </a>
+
+    </div>
+
+    <!-- Command Injection -->
+
+    <div class="card">
+
+        <h2>Command Injection</h2>
+
+        <p><span class="hard">🔴 Difficulty : Hard</span></p>
+
+        <p><strong>Category :</strong> Server Side</p>
+
+        <p><strong>OWASP :</strong> A03:2021 Injection</p>
+
+        <p>
+            Execute operating system commands through vulnerable backend code.
+        </p>
+
+        <a href="/command">
+            <button>Start Lab</button>
+        </a>
+
+    </div>
+
+    <!-- Path Traversal -->
+
+    <div class="card">
+
+        <h2>Path Traversal</h2>
+
+        <p><span class="medium">🟡 Difficulty : Medium</span></p>
+
+        <p><strong>Category :</strong> File System</p>
+
+        <p><strong>OWASP :</strong> A01:2021 Broken Access Control</p>
+
+        <p>
+            Read sensitive files through insecure file path handling.
+        </p>
+
+        <a href="/traversal">
+            <button>Start Lab</button>
+        </a>
+
+    </div>
+
+</div>
+
+<hr>
+
+<h2>About VulnLab</h2>
+
+<p>
+VulnLab is an intentionally vulnerable web application built using
+Flask and SQLite for cybersecurity education, penetration testing,
+and secure coding awareness.
+</p>
+
+<h3>Technologies Used</h3>
+
+<ul>
+
+    <li>Python</li>
+
+    <li>Flask</li>
+
+    <li>SQLite</li>
+
+    <li>HTML5</li>
+
+    <li>CSS3</li>
+
+</ul>
+
+{% endblock %}

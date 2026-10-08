@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>📂 Path Traversal Lab</h1>
+
+<p>
+    <span class="medium">🟡 Difficulty : Medium</span>
+</p>
+
+<p>
+    <strong>OWASP :</strong>
+    A01:2021 Broken Access Control
+</p>
+
+<hr>
+
+<h2>Description</h2>
+
+<p>
+    Path Traversal, also known as Directory Traversal, occurs when an
+    application allows users to access files outside the intended directory.
+</p>
+
+<h2>Objective</h2>
+
+<p>
+    Try reading files from the
+    <strong>vulnerable_files</strong>
+    directory.
+</p>
+
+<form method="GET" action="/traversal">
+
+    <label for="file">
+        File name:
+    </label>
+
+    <input
+        type="text"
+        id="file"
+        name="file"
+        placeholder="Enter a filename..."
+    >
+
+    <button type="submit">
+        Open File
+    </button>
+
+</form>
+
+<hr>
+
+<h2>Output</h2>
+
+<pre>{{ output }}</pre>
+
+<hr>
+
+<h2>Try These Inputs</h2>
+
+<pre>secret.txt
+
+config.ini
+
+../notes.txt
+
+../../notes.txt</pre>
+
+<hr>
+
+<h2>How It Works</h2>
+
+<p>
+    The application takes the filename supplied by the user and combines it
+    with the vulnerable files directory.
+</p>
+
+<p>
+    Because the application does not verify that the final path remains inside
+    the intended directory, directory traversal sequences such as
+    <code>../</code> can be used to access files outside that directory.
+</p>
+
+<hr>
+
+<h2>Secure Version</h2>
+
+<pre>from pathlib import Path
+
+BASE = Path("vulnerable_files").resolve()
+
+requested = (BASE / filename).resolve()
+
+if BASE not in requested.parents:
+
+    raise Exception("Invalid Path")
+
+with open(requested, "r") as file:
+
+    output = file.read()</pre>
+
+<hr>
+
+<h2>Remediation</h2>
+
+<ul>
+
+    <li>
+        Never trust filenames supplied by users.
+    </li>
+
+    <li>
+        Resolve the requested path before accessing the filesystem.
+    </li>
+
+    <li>
+        Verify that the resolved path remains inside the allowed directory.
+    </li>
+
+    <li>
+        Prefer allowlists of permitted files where possible.
+    </li>
+
+</ul>
+
+{% endblock %}

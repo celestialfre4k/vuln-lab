@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>🔐 Authentication Bypass Lab</h1>
+
+<p>
+    <span class="medium">🟡 Difficulty : Medium</span>
+</p>
+
+<p>
+    <strong>Category :</strong> Authentication
+</p>
+
+<p>
+    <strong>OWASP :</strong>
+    A07:2021 Identification and Authentication Failures
+</p>
+
+<hr>
+
+<h2>Description</h2>
+
+<p>
+    Authentication bypass vulnerabilities occur when an application
+    incorrectly verifies user credentials or allows authentication
+    controls to be circumvented.
+</p>
+
+<p>
+    In this lab, the login functionality contains an intentionally
+    vulnerable SQL query.
+</p>
+
+<h2>Objective</h2>
+
+<p>
+    Analyze the authentication mechanism and understand how improper
+    handling of user input can cause the application to authenticate
+    a user without properly validating the password.
+</p>
+
+<hr>
+
+<h2>Login</h2>
+
+<form method="POST" action="/login">
+
+    <label for="username">
+        Username:
+    </label>
+
+    <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter username..."
+    >
+
+    <label for="password">
+        Password:
+    </label>
+
+    <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter password..."
+    >
+
+    <button type="submit">
+        Login
+    </button>
+
+</form>
+
+{% if message %}
+
+<hr>
+
+<h2>Login Result</h2>
+
+<pre>{{ message }}</pre>
+
+{% endif %}
+
+<hr>
+
+<h2>Lab Concept</h2>
+
+<p>
+    The vulnerable application builds its authentication query using
+    user-controlled input.
+</p>
+
+<pre>SELECT * FROM users
+WHERE username = 'USER_INPUT'</pre>
+
+<p>
+    The application then checks whether a database record is returned.
+    The password is not incorporated into the SQL query used for
+    authentication.
+</p>
+
+<hr>
+
+<h2>Test Environment</h2>
+
+<p>
+    This lab is intentionally vulnerable and is designed to be tested
+    only against your local VulnLab instance.
+</p>
+
+<p>
+    Example test input:
+</p>
+
+<pre>' OR 1=1--</pre>
+
+<p>
+    The purpose is to understand how SQL injection can affect an
+    authentication decision.
+</p>
+
+<hr>
+
+<h2>How It Works</h2>
+
+<p>
+    The vulnerable backend uses the supplied username directly inside
+    an SQL statement.
+</p>
+
+<pre>query = f"""
+SELECT * FROM users
+WHERE username = '{username}'
+"""</pre>
+
+<p>
+    If the resulting query returns a database record, the application
+    creates a session for the supplied user.
+</p>
+
+<hr>
+
+<h2>Secure Version</h2>
+
+<pre>query = """
+SELECT id, username, password_hash
+FROM users
+WHERE username = ?
+"""
+
+result = cursor.execute(
+    query,
+    (username,)
+).fetchone()
+
+if result:
+
+    # Verify the submitted password
+    # against the stored password hash.
+
+    authenticate_user()
+
+else:
+
+    message = "Invalid credentials"</pre>
+
+<hr>
+
+<h2>Remediation</h2>
+
+<ul>
+
+    <li>
+        Use parameterized database queries.
+    </li>
+
+    <li>
+        Verify both username and password.
+    </li>
+
+    <li>
+        Store passwords using strong password hashing.
+    </li>
+
+    <li>
+        Do not build authentication queries using string concatenation.
+    </li>
+
+    <li>
+        Implement appropriate session management.
+    </li>
+
+    <li>
+        Avoid exposing database errors to users.
+    </li>
+
+</ul>
+
+{% endblock %}

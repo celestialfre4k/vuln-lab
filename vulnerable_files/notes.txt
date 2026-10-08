@@ -1,0 +1,9 @@
+Internal Notes
+
+Do not share with anyone.
+
+Username : admin
+
+Password : admin123
+
+FLAG{PATH_TRAVERSAL_SUCCESS}

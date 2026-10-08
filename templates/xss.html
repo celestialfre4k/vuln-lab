@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>🕷️ Cross-Site Scripting (XSS) Lab</h1>
+
+<p>
+    <span class="easy">🟢 Difficulty : Easy</span>
+</p>
+
+<p>
+    <strong>Category :</strong> Client-Side Injection
+</p>
+
+<p>
+    <strong>OWASP :</strong>
+    A03:2021 Injection
+</p>
+
+<hr>
+
+<h2>Description</h2>
+
+<p>
+    Cross-Site Scripting (XSS) occurs when an application includes
+    untrusted user input in a web page without properly encoding or
+    sanitizing it.
+</p>
+
+<p>
+    In this lab, the application reflects the supplied input directly
+    into the response.
+</p>
+
+<h2>Objective</h2>
+
+<p>
+    Determine whether your input is interpreted as HTML or JavaScript
+    instead of being displayed as ordinary text.
+</p>
+
+<hr>
+
+<h2>Test Input</h2>
+
+<form method="GET" action="/xss">
+
+    <label for="name">
+        Enter your input:
+    </label>
+
+    <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter text..."
+    >
+
+    <button type="submit">
+        Submit
+    </button>
+
+</form>
+
+<hr>
+
+<h2>Output</h2>
+
+<div class="card">
+
+    {{ output|safe }}
+
+</div>
+
+<hr>
+
+<h2>Try These Inputs</h2>
+
+<pre>&lt;h1&gt;Hello&lt;/h1&gt;
+
+&lt;b&gt;Test&lt;/b&gt;
+
+&lt;script&gt;alert('XSS')&lt;/script&gt;</pre>
+
+<hr>
+
+<h2>How It Works</h2>
+
+<p>
+    The application receives the value of the
+    <code>name</code> parameter and places it directly into the
+    generated response.
+</p>
+
+<p>
+    Because the application does not safely encode the supplied input,
+    browser-interpreted HTML or JavaScript can become part of the page.
+</p>
+
+<hr>
+
+<h2>Secure Version</h2>
+
+<pre>from markupsafe import escape
+
+name = request.args.get("name", "")
+
+output = escape(name)
+
+return render_template(
+    "xss.html",
+    output=output
+)</pre>
+
+<hr>
+
+<h2>Remediation</h2>
+
+<ul>
+
+    <li>
+        Contextually encode untrusted user input before displaying it.
+    </li>
+
+    <li>
+        Avoid inserting untrusted input directly into HTML.
+    </li>
+
+    <li>
+        Use framework-provided automatic escaping where available.
+    </li>
+
+    <li>
+        Implement an appropriate Content Security Policy (CSP).
+    </li>
+
+</ul>
+
+{% endblock %}
